@@ -1,0 +1,56 @@
+ui_print("\nD-Audio UPDATE START...\n");
+
+ui_print("\nlk.rom extract_file to upgrade");
+package_extract_file("lk.rom", "/upgrade/lk.rom");
+
+write_bootloader("mmcblk0boot0","lk.rom");
+
+ui_print("\n/tmp/lk.rom deleted");
+delete("/upgrade/lk.rom");
+
+ui_print("\nrecovery.img extract_file to upgrade");
+package_extract_file("recovery.img", "/tmp/recovery.img");
+
+ui_print("\nrecovery.img writing...");
+write_raw_image("/tmp/recovery.img", "recovery");
+
+ui_print("\n/tmp/recovery.img deleted");
+delete("/tmp/recovery.img");
+
+ui_print("\nboot.img extract_file to upgrade");
+package_extract_file("boot.img", "/tmp/boot.img");
+
+ui_print("\nboot.img writing...");
+write_raw_image("/tmp/boot.img", "boot");
+
+ui_print("\n/tmp/boot.img deleted");
+delete("/tmp/boot.img");
+
+ui_print("\ndevice_tree.dtb extract_file to upgrade");
+package_extract_file("device_tree.dtb", "/tmp/device_tree.dtb");
+
+ui_print("\nboot.img writing...");
+write_raw_image("/tmp/device_tree.dtb", "dtb");
+
+ui_print("\n/tmp/device_tree.dtb deleted");
+delete("/upgrade/device_tree.dtb");
+
+ui_print("\nsplash.img extract_file to upgrade");
+package_extract_file("splash.img", "/tmp/splash.img");
+
+ui_print("\nWrite splash.img ...");
+write_raw_image("/tmp/splash.img", "splash");
+
+ui_print("\n/tmp/splash.img deleted");
+delete("/tmp/splash.img");
+
+ui_print("\nsystem partition formatting...");
+format("ext4","EMMC","/dev/block/mmcblk0p3","452984832","system");
+
+ui_print("\nSystem partition writing... ");
+package_extract_file("system.ext4", "/tmp/system.ext4");
+write_raw_image("/tmp/system.ext4", "system");
+delete("/tmp/system.ext4");
+
+ui_print("\nD-Audio system update finished\n");
+
