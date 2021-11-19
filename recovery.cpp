@@ -57,7 +57,7 @@ extern "C" {
 #include "lgit9x28modemutils/include/lgit_9x28_api.h"
 }
 
-//#define UPDATE_FILE_SIGNING	1
+#define UPDATE_FILE_SIGNING	1
 
 struct selabel_handle *sehandle;
 
@@ -2289,6 +2289,9 @@ int update_system_package(int enc_path)
 
 	if (enc_path == 1) {
 
+#if 1
+		printf("Don't actually do a damn thing");
+#else
 		ret = update_bootloader_function("/navi/lk.rom");
 		if (ret != 0) {
 			printf("update failure about bootloader, ret (%d) \r\n",ret);
@@ -2326,6 +2329,7 @@ int update_system_package(int enc_path)
 			printf("update failure about system, ret (%d) \r\n",ret);
 			return -6;
 		}
+#endif
 
 	} else {
 
@@ -3527,12 +3531,12 @@ int main(int argc, char **argv)
 					DeleteFolder("/upgrade/system");
 				}
 
-				DeleteFile("/navi/lk.rom");
-				DeleteFile("/navi/boot.img");
-				DeleteFile("/navi/device_tree.dtb");
-				DeleteFile("/navi/splash.img");
-				DeleteFile("/navi/recovery.img");
-				DeleteFile("/navi/system.ext4");
+				//DeleteFile("/navi/lk.rom");
+				//DeleteFile("/navi/boot.img");
+				//DeleteFile("/navi/device_tree.dtb");
+				//DeleteFile("/navi/splash.img");
+				//DeleteFile("/navi/recovery.img");
+				//DeleteFile("/navi/system.ext4");
 				sync();
 
 				printf("system package update time : %d \n",print_time(module_time_sec));
