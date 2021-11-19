@@ -57,7 +57,7 @@ extern "C" {
 #include "lgit9x28modemutils/include/lgit_9x28_api.h"
 }
 
-#define UPDATE_FILE_SIGNING	1
+//#define UPDATE_FILE_SIGNING	1
 
 struct selabel_handle *sehandle;
 
