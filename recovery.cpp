@@ -2238,23 +2238,23 @@ int check_validation_system_package(int enc)
 		}
 	}
 
-	/* check MICOM firmware *********************************************/
+	/* check MICOM firmware *********************************************
 	if (access(MICOM_FILE,F_OK) == 0) {
 		ret = check_validity_sha224(MICOM_FILE, "micom_sw.bin");
 		if(ret != 0) {
 			printf("[ERROR] ==> micom_sw.bin sha224 check : ret = %d \n", ret);
 			return -8;
 		}
-	}
+	} */
 
-	/* check GPS firmware *********************************************/
+	/* check GPS firmware *********************************************
 	if (access(GPS_FILE,F_OK) == 0) {
 		ret = check_validity_sha224(GPS_FILE, "gps_module.bin");
 		if(ret != 0) {
 			printf("[ERROR] ==> micom_sw.bin sha224 check : ret = %d \n", ret);
 			return -9;
 		}
-	}
+	} */
 
 	/* check MODEM firmware *********************************************/
 
@@ -3289,7 +3289,7 @@ int main(int argc, char **argv)
 					// Descryption 
 					//----------------------------------------------
 
-					if (access("/upgrade/enc_micom/enc_micom_sw.bin",F_OK) == 0) {
+					/*if (access("/upgrade/enc_micom/enc_micom_sw.bin",F_OK) == 0) {
 
 						rename("/upgrade/enc_micom","/upgrade/micom");
 						sync();
@@ -3315,7 +3315,7 @@ int main(int argc, char **argv)
 							ret = write(mFd,mBuf,sizeof(unsigned char)*4);
 							close(mFd);
 						}
-					}
+					} */
 
 					if ( (access(ENC_SYSTEM_UPDATE_LK_PATH,F_OK) == 0) &&  
 							(access(ENC_SYSTEM_UPDATE_BOOT_PATH,F_OK) == 0) &&
@@ -3403,7 +3403,7 @@ int main(int argc, char **argv)
 			// --------------------------------------------------
 			// VR1 Update 
 			// --------------------------------------------------
-			vr1_parsing_name = strchr(update_tar_pkg_file,'_');
+			/*vr1_parsing_name = strchr(update_tar_pkg_file,'_');
 			vr1_parsing_name = strchr(vr1_parsing_name + 1, '_');
 
 			memset(update_vr1_pkg_file,0x00,sizeof(char)*256);
@@ -3450,15 +3450,15 @@ int main(int argc, char **argv)
 					sprintf(mbuf, "%s", "echo 1 > /proc/sys/vm/drop_caches");
 					system(mbuf);
 				}
-			}
-			printf("VR1 time : %d \n",print_time(module_time_sec));
+			} 
+			printf("VR1 time : %d \n",print_time(module_time_sec)); */
 			// --------------------------------------------------
 
 
 			// --------------------------------------------------
 			// Quickboot Update 
 			// --------------------------------------------------
-			time(&module_time_sec);
+			/*time(&module_time_sec);
 			ret = update_quickboot_package(update_tar_pkg_file,device);
 			if (ret != 0) {
 				display_system_update_error(RecoveryUI::CUR_UPDATE_LABLE_TYPE_SYSTEM_ERROR,REC_SYSTEM_INSTALL_ERROR);
@@ -3471,7 +3471,7 @@ int main(int argc, char **argv)
 				char mbuf[256] = {0x00,};
 				sprintf(mbuf, "%s", "echo 1 > /proc/sys/vm/drop_caches");
 				system(mbuf);
-			}
+			} */
 
 
 			//----------------------------------------------
@@ -3562,7 +3562,7 @@ int main(int argc, char **argv)
 			// --------------------------------------------------
 			// Navi Map Update 
 			// --------------------------------------------------
-			time(&module_time_sec);
+			/*time(&module_time_sec);
 
 			ret = update_navi_map();
 			if (ret != 0) {
@@ -3589,7 +3589,7 @@ int main(int argc, char **argv)
 			sync();
 
 			printf("VR2 time : %d \n",print_time(module_time_sec));
-			// --------------------------------------------------
+			// -------------------------------------------------- */
 
 			ui->SetProgress(1);
 		}
@@ -3730,7 +3730,7 @@ int main(int argc, char **argv)
 	}
 #endif
 
-	// Micom update func start
+/*	// Micom update func start
 	ret = uComUpdateFunc();
 	if(ret != MICOM_STATUS_OK) {
 		copy_log_file(TEMPORARY_LOG_FILE, LAST_LOG_FILE, false);
@@ -3775,7 +3775,7 @@ int main(int argc, char **argv)
 			request_to_enter_sleep_mode();
 			while (1) { }
 		}
-	}
+	} */
 
 exit:
 	ui->ShowSpinProgress(false);
