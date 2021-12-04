@@ -33,6 +33,8 @@
 #include "minui.h"
 #include "graphics.h"
 
+#define TCC_FB_UPDATE_LOCK	0x0402
+
 static GRSurface* fbdev_init(minui_backend*);
 static GRSurface* fbdev_flip(minui_backend*);
 static void fbdev_blank(minui_backend*, bool);
@@ -45,6 +47,7 @@ static int displayed_buffer;
 
 static fb_var_screeninfo vi;
 static int fb_fd = -1;
+static int fblock = 0;
 
 static minui_backend my_backend = {
     .init = fbdev_init,
@@ -61,7 +64,10 @@ static void fbdev_blank(minui_backend* backend __unused, bool blank)
 {
     int ret;
 
+#if 0
     ret = ioctl(fb_fd, FBIOBLANK, blank ? FB_BLANK_POWERDOWN : FB_BLANK_UNBLANK);
+#endif
+    ret = ioctl(fb_fd, FBIOBLANK, FB_BLANK_UNBLANK);
     if (ret < 0)
         perror("ioctl(): blank");
 }
@@ -89,6 +95,12 @@ static GRSurface* fbdev_init(minui_backend* backend) {
     int fd = open("/dev/graphics/fb0", O_RDWR);
     if (fd == -1) {
         perror("cannot open fb0");
+        return NULL;
+    }
+
+    if (ioctl(fd, TCC_FB_UPDATE_LOCK, &fblock) < 0) {
+        perror("failed to FB LOCK enable");
+        close(fd);
         return NULL;
     }
 
