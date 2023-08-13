@@ -33,6 +33,8 @@
 
 #include "minui.h"
 
+#define TCC_FB_UPDATE_LOCK 0x0402
+
 #ifdef BOARD_USE_CUSTOM_RECOVERY_FONT
 #include BOARD_USE_CUSTOM_RECOVERY_FONT
 #else
@@ -165,10 +167,17 @@ static int get_framebuffer(GGLSurface *fb)
 {
     int fd;
     void *bits;
+    int fblock = 0;
 
     fd = open("/dev/graphics/fb0", O_RDWR);
     if (fd < 0) {
         perror("cannot open fb0");
+        return -1;
+    }
+    
+    if (ioctl(fd, TCC_FB_UPDATE_LOCK, &fblock) < 0) {
+        perror("failed to FB LOCK enable");
+        close(fd);
         return -1;
     }
 
@@ -820,7 +829,10 @@ int gr_fb_blank(int blank)
     //if (blank)
         //free_overlay(gr_fb_fd);
 
+#if 0
     ret = ioctl(gr_fb_fd, FBIOBLANK, blank ? FB_BLANK_POWERDOWN : FB_BLANK_UNBLANK);
+#endif
+    ret = ioctl(gr_fb_fd, FBIOBLANK, FB_BLANK_UNBLANK);
     if (ret < 0)
         perror("ioctl(): blank");
 
